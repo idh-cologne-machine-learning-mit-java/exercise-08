@@ -4,7 +4,7 @@ import weka.core.Instance;
 
 public class Tree {
 	Tree[] children;
-	int attributeIndex;
+	int attributeIndex = -1;
 
 	public double predict(Instance instance) {
 		// TODO: Implement
