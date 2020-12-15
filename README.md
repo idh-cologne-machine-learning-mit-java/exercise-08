@@ -1,25 +1,46 @@
-# Exercise 6: Unit-Testing
+# Exercise 7: CI and Library Functions
 
 
-The goal of this exercise is to implement units tests for our upcoming implementation of a decision tree algorithm.
+This exercise has two goals: Getting the GitHub action to work and implementing 
+some core functions we will need for the real algorithm implementation.
+
+I created a new repository called exercise 7, but in a real world, we would 
+continue the implementation with the old one. You can also do that if you want 
+to. The exercise-07 repository is a copy of the exercise-06 repository, based
+on the reference solution.
 
 ## Step 1
-Please `clone` the repository `https://github.com/idh-cologne-machine-learning-mit-java/exercise-06`.
+Please `clone` the repository `https://github.com/idh-cologne-machine-learning-mit-java/exercise-07`.
 
 Create a new branch, using your UzK username.
 
 ## Step 2
-The `pom.xml` file already contains the necessary dependencies.
+Setup the GitHub action. You will need three steps in your action:
+checkout (as we have already done during the exercise), set up Java and run maven. 
 
-You'll find the code framework we developed during the exercise in the 
-respective files. Please add a unit test for each class, and one or more tests
-for each method. 
+For the java setup, you can use the action `actions/setup-java@v1`, which takes 
+the java version as a parameter `java-version`. 
 
-The unit test code is stored in `src/test/java`, using the same package structure 
-as the regular code. Make sure that your code compiles and runs, by either 
-entering `mvn test` on the command line or via the GUI of your IDE. Be aware 
-that all tests are expected to *fail*, as we haven't written any code yet. If a 
-test does not fail, verify that it actually tests something.
+The maven step doesn't use a predefined action, but executes a command on a 
+command line. This can be done with the parameter `run`, the value being the 
+command. Use `mvn test` here.
+
+You may find a copy-pastable solution if you start googling, but you learn more
+if you do it by yourself. The description above, together with what we have 
+discussed in class, contains everything you need to know.
 
 ## Step 3
-Commit your changes and push them to the server.
+Implement the function `Tree.isLeaf()`. Verify that it covers all relevant cases 
+by running unit tests. Commit and push to the server, verify that unit tests are
+fulfilled there as well.
+
+## Step 4
+Implement the function `Classifier.entropy()`. Verify that it covers all relevant cases 
+by running unit tests. Commit and push to the server, verify that unit tests are
+fulfilled there as well.
+
+## Step 5
+Implement the function `Classifier.informationGain()`. Verify that it covers all relevant cases 
+by running unit tests. Commit and push to the server, verify that unit tests are
+fulfilled there as well.
+
