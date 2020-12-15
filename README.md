@@ -4,10 +4,20 @@
 This exercise has two goals: Getting the GitHub action to work and implementing 
 some core functions we will need for the real algorithm implementation.
 
+## Optional: Continue your own repository
+
 I created a new repository called exercise 7, but in a real world, we would 
 continue the implementation with the old one. You can also do that if you want 
 to. The exercise-07 repository is a copy of the exercise-06 repository, based
 on the reference solution.
+
+If you want to incorporate the reference solution, and the changes for 
+exercise 7 into your branch based on ex 6, you can use a merge command across
+repostories: If you are in your ex 6 repository, running 
+`git merge https://github.com/idh-cologne-machine-learning-mit-java/exercise-07.git` 
+should do the trick. It is, however, quite likely that you need to deal with
+merge conflicts. 
+
 
 ## Step 1
 Please `clone` the repository `https://github.com/idh-cologne-machine-learning-mit-java/exercise-07`.
