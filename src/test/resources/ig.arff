@@ -1,0 +1,18 @@
+@relation igtest
+
+@attribute a1 {false,true}
+@attribute a2 {false,true}
+@attribute a3 {false,true}
+@attribute class {false,true}
+
+@data
+false,false,false,true
+false,false,false,true
+false,false,false,true
+false,true,false,true
+false,true,false,true
+true,false,false,false
+true,false,false,false
+true,false,false,false
+true,true,true,false
+true,true,true,false
