@@ -8,9 +8,12 @@ public class Tree {
 	double prediction = Double.NaN;
 
 	public double predict(Instance instance) {
-		// TODO: Implement
-		// recursive case
-		return 0.0;
+		if (this.isLeaf()) {
+			return prediction;
+		} else {
+			double attributeValue = instance.value(attributeIndex);
+			return this.children[(int) attributeValue].predict(instance);
+		}
 	}
 
 	public boolean isLeaf() {

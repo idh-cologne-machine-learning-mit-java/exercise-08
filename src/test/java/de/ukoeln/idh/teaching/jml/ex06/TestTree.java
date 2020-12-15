@@ -59,6 +59,12 @@ public class TestTree {
 		tree.children[1].children[0].prediction = 1.0;
 		tree.children[1].children[1].prediction = 0.0;
 
+		// attributeIndex = 3
+		// - prediction = 0.0
+		// - attributeIndex = 2
+		// --- prediction = 1.0
+		// --- prediction = 0.0
+
 		Instance instance = mock(Instance.class);
 		when(instance.value(3)).thenReturn(0.0);
 		assertEquals(0.0, tree.predict(instance));
