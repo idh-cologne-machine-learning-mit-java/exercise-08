@@ -5,6 +5,7 @@ import weka.core.Instance;
 public class Tree {
 	Tree[] children;
 	int attributeIndex = -1;
+	double prediction = Double.NaN;
 
 	public double predict(Instance instance) {
 		// TODO: Implement
