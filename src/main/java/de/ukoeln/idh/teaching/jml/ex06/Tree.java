@@ -3,7 +3,7 @@ package de.ukoeln.idh.teaching.jml.ex06;
 import weka.core.Instance;
 
 public class Tree {
-	Tree[] children;
+	Tree[] children = null;
 	int attributeIndex = -1;
 	double prediction = Double.NaN;
 
