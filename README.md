@@ -54,3 +54,10 @@ Implement the function `Classifier.informationGain()`. Verify that it covers all
 by running unit tests. Commit and push to the server, verify that unit tests are
 fulfilled there as well.
 
+## Step 6 (optional)
+You may have noticed that the amount of information that each tree node needs 
+to store is already quite limited -- but do you find ways to make it even 
+smaller, in terms of memory consumption? (hint: an `int` takes 4 bytes, 
+a `double` 8 bytes, `boolean` can be expected to smaller, although their exact
+size is virtual machine dependent).
+
