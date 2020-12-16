@@ -82,18 +82,18 @@ public class TestClassifier {
 	@Test
 	public void testEntropy() throws IOException {
 		// values taken from slides
-		assertEquals(0.0, classifier.entropy(generateDataset(1, new int[] { 100 })));
-		assertEquals(0.693, classifier.entropy(generateDataset(2, new int[] { 50, 50 })));
-		assertEquals(0.562, classifier.entropy(generateDataset(2, new int[] { 75, 25 })));
-		assertEquals(1.386294, classifier.entropy(generateDataset(4, new int[] { 25, 25, 25, 25 })));
+		assertEquals(0.0, classifier.entropy(generateDataset(1, new int[] { 100 })), 1e-03);
+		assertEquals(0.693, classifier.entropy(generateDataset(2, new int[] { 50, 50 })), 1e-03);
+		assertEquals(0.562, classifier.entropy(generateDataset(2, new int[] { 75, 25 })), 1e-03);
+		assertEquals(1.386294, classifier.entropy(generateDataset(4, new int[] { 25, 25, 25, 25 })), 1e-03);
 
 		// values calculated with R:
 		// library(entropy)
 		// entropy(c(75,25))
 		// entropy(c(5, 25, 10, 5, 5, 10, 10, 10, 10, 10))
-		assertEquals(0.5623351, classifier.entropy(generateDataset(2, new int[] { 75, 25 })));
+		assertEquals(0.5623351, classifier.entropy(generateDataset(2, new int[] { 75, 25 })), 1e-03);
 		assertEquals(2.177484,
-				classifier.entropy(generateDataset(10, new int[] { 5, 25, 10, 5, 5, 10, 10, 10, 10, 10 })));
+				classifier.entropy(generateDataset(10, new int[] { 5, 25, 10, 5, 5, 10, 10, 10, 10, 10 })), 1e-03);
 
 		Instances instances = new Instances(new FileReader("src/test/resources/ig.arff"));
 		assertEquals(0.693, classifier.entropy(instances));
@@ -103,8 +103,8 @@ public class TestClassifier {
 	public void testInformationGain() throws IOException {
 		Instances instances = new Instances(new FileReader("src/test/resources/ig.arff"));
 
-		assertEquals(0.693, classifier.informationGain(instances, 1));
-		assertEquals(0.693 - 2 * 0.5 * 0.673, classifier.informationGain(instances, 2));
-		assertEquals(0.693 - (0.8 * 0.6615632 + 0.2 * 0), classifier.informationGain(instances, 3));
+		assertEquals(0.693, classifier.informationGain(instances, 1), 1e-03);
+		assertEquals(0.693 - 2 * 0.5 * 0.693, classifier.informationGain(instances, 2), 1e-03);
+		assertEquals(0.693 - (0.8 * 0.6615632 + 0.2 * 0), classifier.informationGain(instances, 3), 1e-03);
 	}
 }
