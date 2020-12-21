@@ -41,20 +41,19 @@ public class TestClassifier {
 
 		// We first generate possible class values
 		List<String> attributeValues = new ArrayList<String>();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < numberOfClasses; i++) {
 			attributeValues.add("Class " + i);
 		}
 
 		// and assign the created class values to a new attribute called class
-		Attribute classAttribute = new Attribute("class", attributeValues.subList(0, numberOfClasses - 1));
+		Attribute classAttribute = new Attribute("class", attributeValues);
 
 		// Load the base data set, and add the new attribute, set it as class attribute
 		// Adding a new attribute sets all values to "unknown", we have to fix that
 		// later
 		Instances instances = new Instances(new FileReader("src/test/resources/base.arff"));
 		instances.insertAttributeAt(classAttribute, instances.numAttributes());
-		instances.setClass(classAttribute);
-
+		instances.setClassIndex(instances.numAttributes() - 1);
 		// Set the actual class values by "consuming" the given numbers in the portions
 		// array.
 		int currentClass = 0;
@@ -105,8 +104,8 @@ public class TestClassifier {
 		Instances instances = new Instances(new FileReader("src/test/resources/ig.arff"));
 		instances.setClassIndex(instances.numAttributes() - 1);
 
-		assertEquals(0.693, classifier.informationGain(instances, 1), 1e-03);
-		assertEquals(0.693 - 2 * 0.5 * 0.693, classifier.informationGain(instances, 2), 1e-03);
-		assertEquals(0.693 - (0.8 * 0.6615632 + 0.2 * 0), classifier.informationGain(instances, 3), 1e-03);
+		assertEquals(0.693, classifier.informationGain(instances, 0), 1e-03);
+		assertEquals(0.693 - 2 * 0.5 * 0.693, classifier.informationGain(instances, 1), 1e-03);
+		assertEquals(0.693 - (0.8 * 0.6615632 + 0.2 * 0), classifier.informationGain(instances, 2), 1e-03);
 	}
 }
