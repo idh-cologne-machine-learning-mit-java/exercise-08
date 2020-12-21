@@ -29,6 +29,25 @@ public class Classifier {
 		return entropy(instanceNumbers);
 	}
 
+	protected static int[] countClasses(Instances instances) {
+		int[] instanceNumbers = new int[instances.numClasses()];
+		for (Instance instance : instances) {
+			instanceNumbers[(int) instance.classValue()] += 1;
+		}
+		return instanceNumbers;
+	}
+
+	/**
+	 * This method extracts frequency counts from the instances, and calls the
+	 * entropy method that uses int[] as an input.
+	 * 
+	 * @param instances
+	 * @return
+	 */
+	public double entropy(Instances instances) {
+		return entropy(countClasses(instances));
+	}
+
 	/**
 	 * calculates information gain for a individual feature
 	 */
