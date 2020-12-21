@@ -1,5 +1,6 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -9,6 +10,31 @@ public class Classifier {
 		// TODO: implement
 		return null;
 	};
+
+	protected static Instances[] subsets(Instances instances, int attributeIndex) {
+		Instances[] ret = new Instances[instances.attribute(attributeIndex).numValues()];
+
+		for (int subsetIndex = 0; subsetIndex < instances.attribute(attributeIndex).numValues(); subsetIndex++) {
+			ret[subsetIndex] = new Instances(instances, 0);
+		}
+		for (Instance instance : instances) {
+			ret[(int) instance.value(attributeIndex)].add(new DenseInstance(instance));
+		}
+
+		return ret;
+	}
+
+	protected static int getMajority(int[] instances) {
+		int majority = 0;
+		int majorityIndex = 0;
+		for (int i = 0; i < instances.length; i++) {
+			if (instances[i] > majority) {
+				majority = instances[i];
+				majorityIndex = i;
+			}
+		}
+		return majorityIndex;
+	}
 
 	protected static int[] countClasses(Instances instances) {
 		int[] instanceNumbers = new int[instances.numClasses()];
