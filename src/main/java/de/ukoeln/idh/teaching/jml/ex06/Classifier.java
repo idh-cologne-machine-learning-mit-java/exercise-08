@@ -33,8 +33,42 @@ public class Classifier {
 	 * calculates information gain for a individual feature
 	 */
 	public double informationGain(Instances instances, int attributeIndex) {
-		// TODO: implement
-		return 0.0;
+		// the number of distinct values of the attribute determines the number of sub
+		// sets we consider
+		int numberOfSubsets = instances.numDistinctValues(attributeIndex);
+
+		// for each subset, we create an array that contains the number of instances
+		// from each class (this corresponds to the input of the entropy(int[]) method).
+		int[][] subsets = new int[numberOfSubsets][instances.numClasses()];
+
+		// to calculate the relative weight of each subset, we need the size of each
+		// subset
+		int[] subsetSizes = new int[numberOfSubsets];
+
+		// this loop iterates over the instances
+		for (Instance instance : instances) {
+			// we extract the feature value of the given attribute
+			int subsetIndex = (int) instance.value(attributeIndex);
+
+			// increase number of instances in the sub subset representing one class
+			subsets[subsetIndex][(int) instance.classValue()] += 1;
+
+			// increase total number of instances in subset
+			subsetSizes[subsetIndex] += 1;
+		}
+
+		// calculate entropy before division
+		double remainingEntropy = entropy(instances);
+		for (int i = 0; i < subsets.length; i++) {
+			// calculate weighted entropy for this subset
+			double subEntropy = (subsetSizes[i] / (double) instances.numInstances()) * entropy(subsets[i]);
+
+			// subtract sub entropy from total entropy
+			remainingEntropy -= subEntropy;
+		}
+
+		// return the remaining entropy
+		return remainingEntropy;
 	}
 
 	/**
