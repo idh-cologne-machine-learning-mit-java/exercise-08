@@ -35,7 +35,7 @@ public class Classifier {
 	public double informationGain(Instances instances, int attributeIndex) {
 		// the number of distinct values of the attribute determines the number of sub
 		// sets we consider
-		int numberOfSubsets = instances.numDistinctValues(attributeIndex);
+		int numberOfSubsets = instances.attribute(attributeIndex).numValues();
 
 		// for each subset, we create an array that contains the number of instances
 		// from each class (this corresponds to the input of the entropy(int[]) method).
