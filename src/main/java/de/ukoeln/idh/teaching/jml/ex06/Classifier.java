@@ -1,32 +1,79 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
-import weka.core.Attribute;
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 
 public class Classifier {
 
 	public Tree train(Instances instances) {
-		// TODO: implement
-		return null;
+		double highestGain = 0.0;
+		int attributeIndexWithHighestGain = -1;
+		// go over all, except the class attribute
+		for (int i = 0; i < instances.numAttributes() - 1; i++) {
+			// get information gain
+			double ig = informationGain(instances, i);
+
+			// find maximal IG
+			if (ig > highestGain) {
+				highestGain = ig;
+				attributeIndexWithHighestGain = i;
+			}
+		}
+		// base case: No further information gain to be had
+		if (highestGain == 0.0) {
+			// create a leaf node
+			Tree tree = new Tree();
+			// set its prediction to the majority of the current sub set
+			tree.prediction = getMajority(countClasses(instances));
+			return tree;
+		} else {
+			// create a non-leaf node
+			Tree tree = new Tree();
+			// store current attribute
+			tree.attributeIndex = attributeIndexWithHighestGain;
+			// create children array
+			tree.children = new Tree[instances.attribute(attributeIndexWithHighestGain).numValues()];
+			// split the data set into subsets
+			Instances[] subsets = subsets(instances, attributeIndexWithHighestGain);
+			// generate a tree for each subset
+			for (int child = 0; child < tree.children.length; child++) {
+				tree.children[child] = train(subsets[child]);
+			}
+			return tree;
+		}
 	};
 
 	/**
-	 * This method extracts frequency counts from the instances, and calls the
-	 * entropy method that uses int[] as an input.
+	 * Helper method to create subsets according to an attribute
 	 * 
 	 * @param instances
+	 * @param attributeIndex
 	 * @return
 	 */
-	public double entropy(Instances instances) {
-		Attribute classAttribute = instances.classAttribute();
-		int[] instanceNumbers = new int[classAttribute.numValues()];
+	protected static Instances[] subsets(Instances instances, int attributeIndex) {
+		Instances[] ret = new Instances[instances.attribute(attributeIndex).numValues()];
+
+		for (int subsetIndex = 0; subsetIndex < instances.attribute(attributeIndex).numValues(); subsetIndex++) {
+			ret[subsetIndex] = new Instances(instances, 0);
+		}
 		for (Instance instance : instances) {
-			int classValue = (int) instance.classValue();
-			instanceNumbers[classValue] += 1;
+			ret[(int) instance.value(attributeIndex)].add(new DenseInstance(instance));
 		}
 
-		return entropy(instanceNumbers);
+		return ret;
+	}
+
+	protected static int getMajority(int[] instances) {
+		int majority = 0;
+		int majorityIndex = 0;
+		for (int i = 0; i < instances.length; i++) {
+			if (instances[i] > majority) {
+				majority = instances[i];
+				majorityIndex = i;
+			}
+		}
+		return majorityIndex;
 	}
 
 	protected static int[] countClasses(Instances instances) {
