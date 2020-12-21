@@ -19,4 +19,24 @@ public class Tree {
 	public boolean isLeaf() {
 		return children == null || children.length == 0;
 	}
+	@Override
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		b.append("(");
+		if (isLeaf()) {
+			b.append("Class: ");
+			b.append(prediction);
+		} else {
+			b.append("Attribute : ");
+			b.append(attributeIndex);
+			b.append(" ");
+			for (int child = 0; child < children.length; child++) {
+				b.append(" ");
+				b.append(children[child].toString());
+			}
+		}
+		b.append(")");
+
+		return b.toString();
+	}
 }
