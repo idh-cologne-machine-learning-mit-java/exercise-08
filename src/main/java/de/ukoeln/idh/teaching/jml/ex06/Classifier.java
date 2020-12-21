@@ -1,5 +1,7 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
+import weka.core.Attribute;
+import weka.core.Instance;
 import weka.core.Instances;
 
 public class Classifier {
@@ -9,9 +11,22 @@ public class Classifier {
 		return null;
 	};
 
+	/**
+	 * This method extracts frequency counts from the instances, and calls the
+	 * entropy method that uses int[] as an input.
+	 * 
+	 * @param instances
+	 * @return
+	 */
 	public double entropy(Instances instances) {
-		// TODO: implement
-		return 0.0;
+		Attribute classAttribute = instances.classAttribute();
+		int[] instanceNumbers = new int[classAttribute.numValues()];
+		for (Instance instance : instances) {
+			int classValue = (int) instance.classValue();
+			instanceNumbers[classValue] += 1;
+		}
+
+		return entropy(instanceNumbers);
 	}
 
 	/**
