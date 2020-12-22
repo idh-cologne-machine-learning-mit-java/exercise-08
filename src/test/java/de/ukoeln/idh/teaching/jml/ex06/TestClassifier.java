@@ -1,6 +1,5 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -124,18 +123,4 @@ public class TestClassifier {
 
 	}
 
-	@Test
-	public void testGetMajority() {
-		assertEquals(2, Classifier.getMajority(new int[] { 10, 10, 11 }));
-		assertEquals(0, Classifier.getMajority(new int[] { 10 }));
-	}
-
-	@Test
-	public void testCountClasses() throws FileNotFoundException, IOException {
-		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
-		instances.setClassIndex(instances.numAttributes() - 1);
-
-		int[] classes = Classifier.countClasses(instances);
-		assertArrayEquals(new int[] { 5, 5 }, classes);
-	}
 }
