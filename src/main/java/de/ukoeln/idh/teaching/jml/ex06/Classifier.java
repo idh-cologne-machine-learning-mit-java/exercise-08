@@ -1,6 +1,5 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
-import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -11,17 +10,15 @@ public class Classifier {
 		return null;
 	};
 
+	/**
+	 * For a given data set, create subsets based on one attribute. For each value
+	 * of the attribute, one subset is created to hold all instances that have this
+	 * attribute value.
+	 * 
+	 */
 	protected static Instances[] subsets(Instances instances, int attributeIndex) {
-		Instances[] ret = new Instances[instances.attribute(attributeIndex).numValues()];
-
-		for (int subsetIndex = 0; subsetIndex < instances.attribute(attributeIndex).numValues(); subsetIndex++) {
-			ret[subsetIndex] = new Instances(instances, 0);
-		}
-		for (Instance instance : instances) {
-			ret[(int) instance.value(attributeIndex)].add(new DenseInstance(instance));
-		}
-
-		return ret;
+		// TODO: implement
+		return null;
 	}
 
 	protected static int getMajority(int[] instances) {
