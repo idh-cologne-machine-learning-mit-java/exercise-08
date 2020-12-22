@@ -1,13 +1,47 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 
 public class Classifier {
 
 	public Tree train(Instances instances) {
-		// TODO: implement
-		return null;
+		double highestGain = 0.0;
+		int attributeIndexWithHighestGain = -1;
+		// go over all, except the class attribute
+		for (int i = 0; i < instances.numAttributes() - 1; i++) {
+			// get information gain
+			double ig = informationGain(instances, i);
+
+			// find maximal IG
+			if (ig > highestGain) {
+				highestGain = ig;
+				attributeIndexWithHighestGain = i;
+			}
+		}
+		// base case: No further information gain to be had
+		if (highestGain == 0.0) {
+			// create a leaf node
+			Tree tree = new Tree();
+			// set its prediction to the majority of the current sub set
+			tree.prediction = getMajority(countClasses(instances));
+			return tree;
+		} else {
+			// create a non-leaf node
+			Tree tree = new Tree();
+			// store current attribute
+			tree.attributeIndex = attributeIndexWithHighestGain;
+			// create children array
+			tree.children = new Tree[instances.attribute(attributeIndexWithHighestGain).numValues()];
+			// split the data set into subsets
+			Instances[] subsets = subsets(instances, attributeIndexWithHighestGain);
+			// generate a tree for each subset
+			for (int child = 0; child < tree.children.length; child++) {
+				tree.children[child] = train(subsets[child]);
+			}
+			return tree;
+		}
 	};
 
 	/**
@@ -16,9 +50,18 @@ public class Classifier {
 	 * attribute value.
 	 * 
 	 */
+
 	protected static Instances[] subsets(Instances instances, int attributeIndex) {
-		// TODO: implement
-		return null;
+		Instances[] ret = new Instances[instances.attribute(attributeIndex).numValues()];
+
+		for (int subsetIndex = 0; subsetIndex < instances.attribute(attributeIndex).numValues(); subsetIndex++) {
+			ret[subsetIndex] = new Instances(instances, 0);
+		}
+		for (Instance instance : instances) {
+			ret[(int) instance.value(attributeIndex)].add(new DenseInstance(instance));
+		}
+
+		return ret;
 	}
 
 	protected static int getMajority(int[] instances) {
@@ -48,6 +91,7 @@ public class Classifier {
 	 * @param instances
 	 * @return
 	 */
+
 	public double entropy(Instances instances) {
 		return entropy(countClasses(instances));
 	}
