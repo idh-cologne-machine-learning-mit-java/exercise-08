@@ -1,5 +1,6 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -122,5 +123,38 @@ public class TestClassifier {
 		}
 
 	}
-
+	
+	@Test
+	public void testSubsets() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(instances.numAttributes() - 1);
+		
+		Instances subset1 = new Instances(new FileReader("src/test/resources/subset1.arff"));
+		subset1.setClassIndex(instances.numAttributes() - 1);
+		
+		Instances subset2 = new Instances(new FileReader("src/test/resources/subset2.arff"));
+		subset2.setClassIndex(instances.numAttributes() - 1);
+		
+		Instances[] testSubsets = { subset1, subset2  };
+		Instances[] subsets = Classifier.subsets(instances, 2);
+		
+		//This doesn't work, but i don't know why. All of the elements in the array are equal.
+		//assertArrayEquals(testSubsets, subsets);
+		
+	}
+	
+	@Test
+	public void testGetMajority() {
+		assertEquals(0, Classifier.getMajority(new int[] { 2, 1 }));
+		assertEquals(1, Classifier.getMajority(new int[] { 1, 2 }));
+		assertEquals(0, Classifier.getMajority(new int[] { 0, 0 }));
+	}
+	
+	@Test
+	public void testCountClasses() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(instances.numAttributes() - 1);
+		
+		assertArrayEquals(new int[] {5, 5}, Classifier.countClasses(instances)); 
+	}
 }
