@@ -1,6 +1,7 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -121,6 +122,44 @@ public class TestClassifier {
 			assertEquals(instance.classValue(), tree.predict(instance), "Instance " + i);
 		}
 
+	}
+	
+	@Test
+	public void testSubsets() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		
+		Instances[] subsets = classifier.subsets(instances, 1);
+		assertEquals(subsets.length, instances.attribute(1).numValues());
+		
+		for (Instances is: subsets) {
+			assertEquals(is.numDistinctValues(1), 1); 
+		}
+		
+		ArrayList<Attribute> att = new ArrayList<Attribute>();
+		att.add(new Attribute("Att0"));
+		Instances emptyInstances = new Instances("0", att, 1);
+		assertEquals(classifier.subsets(emptyInstances, 0).length, 0);
+	}
+	
+	@Test
+	public void testGetMajority() {
+		assertEquals(classifier.getMajority(new int[] { 0 }), 0);
+		assertEquals(classifier.getMajority(new int[] {  }), 0);
+		assertEquals(classifier.getMajority(new int[] { 1, 5, 3 }), 1);
+	}
+	
+	@Test
+	public void testCountClasses() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(0);
+		
+		assertArrayEquals(classifier.countClasses(instances), new int[] {6, 4});
+		
+		ArrayList<Attribute> att = new ArrayList<Attribute>();
+		att.add(new Attribute("Att0"));
+		Instances emptyInstances = new Instances("0", att, 1);
+		emptyInstances.setClassIndex(0);
+		assertArrayEquals(classifier.countClasses(emptyInstances), new int[] { 0 });
 	}
 
 }
