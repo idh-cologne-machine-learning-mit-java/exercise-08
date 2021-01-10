@@ -1,5 +1,6 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -122,5 +123,43 @@ public class TestClassifier {
 		}
 
 	}
-
+	@Test
+	public void testSubsets() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		Instances[] sub = classifier.subsets(instances, 1);
+		for(Instances instance : sub) {
+			assertEquals(instance.numDistinctValues(1), 1);
+		}
+		assertEquals(sub.length, instances.attribute(1).numValues());
+		
+//		instances.setClassIndex(instances.numAttributes() - 1);
+//		
+//		Instances a = new Instances(new FileReader("src/test/resources/1_a.arff"));
+//		Instances b = new Instances(new FileReader("src/test/resources/1_b.arff"));
+//		a.setClassIndex(instances.numAttributes() - 1);
+//		b.setClassIndex(instances.numAttributes() - 1);
+//		
+//		Instances[] testSubsets = {a,b};
+//		assertArrayEquals(testSubsets, Classifier.subsets(instances, 1));
+		
+		
+		
+	}
+	
+	@Test
+	public void testGetMajority() {
+		assertEquals(0,Classifier.getMajority(new int[] {1,1}));
+		assertEquals(0,Classifier.getMajority(new int[] {2,1}));
+		assertEquals(0,Classifier.getMajority(new int[] {2,2}));
+		assertEquals(1,Classifier.getMajority(new int[] {1,2}));
+		assertEquals(7,Classifier.getMajority(new int[] {1,2,3,4,5,7,912,31551}));
+	}
+	
+	@Test
+	public void countClasses() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(instances.numAttributes() - 1);
+		assertArrayEquals(new int[] {5,5}, Classifier.countClasses(instances));
+	}
+	
 }
