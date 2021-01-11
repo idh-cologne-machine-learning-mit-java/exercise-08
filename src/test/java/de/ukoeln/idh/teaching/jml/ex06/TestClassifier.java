@@ -1,6 +1,7 @@
 package de.ukoeln.idh.teaching.jml.ex06;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -122,5 +123,35 @@ public class TestClassifier {
 		}
 
 	}
+	@Test
+	public void testsubsets() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		Instances[] subsets = Classifier.subsets(instances, 1);
+		assertEquals(subsets.length, instances.attribute(1).numValues());
 
+		for (Instances i: subsets) {
+			assertEquals(i.numDistinctValues(1), 1);
+		}
+
+		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+		attributes.add(new Attribute("TestAtt"));
+		Instances emptyInstances = new Instances("0", attributes, 1);
+		assertEquals(Classifier.subsets(emptyInstances, 0).length, 0);
+
+	}
+
+	@Test
+	public void testGetMajority() {
+		assertEquals(0, Classifier.getMajority(new int[] {2, 1}));
+		assertEquals(0, Classifier.getMajority(new int[] {2, 2}));
+		assertEquals(1, Classifier.getMajority(new int[] {1, 2}));
+	}
+
+	@Test
+	public void countClasses() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(instances.numAttributes() -1);
+
+		assertArrayEquals(new int[] {5, 5}, Classifier.countClasses(instances));
+	}
 }
