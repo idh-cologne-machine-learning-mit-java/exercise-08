@@ -129,8 +129,6 @@ public class TestClassifier {
 		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
 
 		Instances[] subset;
-		// start test
-		// test if subsets is not grater then the num of values of specific attribute
 		for (int i = 0; i < instances.numAttributes(); i++) {
 			subset = Classifier.subsets(instances, i);
 			assertEquals(subset.length, instances.attribute(i).numValues());
@@ -140,12 +138,9 @@ public class TestClassifier {
 
 	@Test
 	public void testGetMajority() {
-		// test if the greater is chosen
 		assertEquals(0, Classifier.getMajority(new int[] {2, 1}));
 		assertEquals(1, Classifier.getMajority(new int[] {1, 2}));
-		// test whether the it works for more then two options
 		assertEquals(3,Classifier.getMajority(new int[] {1, 2, 3, 5, 4}));
-		// test if the first one is chosen when two equal.
 		assertEquals(1, Classifier.getMajority(new int[] {1, 2, 2}));
 
 
@@ -154,12 +149,10 @@ public class TestClassifier {
 	@Test
 	public void testCountClasses() throws IOException {
 		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
-		// test if the functions automatically sets a the classIndex
 		assertThrows(UnassignedClassException.class, () -> {
 			classifier.countClasses(instances);
 		});
 		instances.setClassIndex(instances.numAttributes() - 1);
-		// test if the functions return array equals the expected one
 		assertArrayEquals(new int[] {5, 5}, Classifier.countClasses(instances));
 	}
 
