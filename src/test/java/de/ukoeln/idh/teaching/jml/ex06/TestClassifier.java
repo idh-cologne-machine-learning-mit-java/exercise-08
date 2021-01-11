@@ -125,7 +125,13 @@ public class TestClassifier {
 	}
 	
 	@Test
-	public void testsubsets() {
+	public void testsubsets() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(instances.numAttributes() -1);
+		
+		Instances[] subsets = Classifier.subsets(instances, 1);
+		assertEquals(subsets.length, instances.attribute(1).numValues());
+
 		
 	}
 	
