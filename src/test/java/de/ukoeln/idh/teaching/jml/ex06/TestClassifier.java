@@ -77,6 +77,32 @@ public class TestClassifier {
 
 		return instances;
 	}
+	
+	@Test
+	public void testSubsets() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(instances.numAttributes() - 1);
+		Instances[] instArray = Classifier.subsets(instances, 0);
+		assertEquals(6, instArray[0].size());
+		assertEquals(4, instArray[1].size());
+		// TODO jedes subset auf homogenität testen
+	}
+	
+	@Test
+	public void testGetMajority() {
+		assertEquals(0, Classifier.getMajority(new int[] {4,3,0}));
+		assertEquals(1, Classifier.getMajority(new int[] {3,4,4}));
+		assertEquals(0, Classifier.getMajority(new int[] {3,3,3,3}));
+	}
+	
+	@Test
+	public void testCountClasses() throws FileNotFoundException, IOException {
+		Instances instances = new Instances(new FileReader("src/test/resources/treetest.arff"));
+		instances.setClassIndex(instances.numAttributes() - 1);
+		int[] instancesNumbers = Classifier.countClasses(instances);
+		assertEquals(5, instancesNumbers[0]);
+		assertEquals(5, instancesNumbers[1]);
+	}
 
 	@Test
 	public void testEntropy() throws IOException {
